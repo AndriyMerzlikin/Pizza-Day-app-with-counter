@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import MenuList from "../../components/MenuList/MenuList";
-import { pizzas } from "../../data";
 import { usePizzaName } from "../../contexts/PizzaNameContext";
 import useFetch from "../../hooks/useFetch";
 import Loader from "../../components/Loader/Loader";
@@ -15,18 +14,17 @@ const MenuPage = () => {
   } = useFetch(PIZZA_API);
 
   const { pizzaName } = usePizzaName();
-  console.log(pizzasList);
 
   useEffect(() => {
     if (pizzaName) {
-      const filteredPizzasList = pizzas.filter((pizza) =>
+      const filteredPizzasList = pizzasList.filter((pizza) =>
         pizza.name.toLowerCase().includes(pizzaName.toLowerCase())
       );
       setPizzasList(filteredPizzasList);
     } else {
-      setPizzasList(pizzas);
+      setPizzasList(pizzasList);
     }
-  }, [pizzaName, setPizzasList]);
+  }, [pizzaName, setPizzasList, pizzasList]);
 
   return (
     <>
