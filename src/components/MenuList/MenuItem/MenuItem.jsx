@@ -1,10 +1,34 @@
-/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { capitalizeFirstLetter } from "../../../utils/arrayHelpers";
 import Button from "../../Button/Button";
+import Counter from "../../Counter/Counter";
 import "./MenuItem.css";
+import { ADD_TO_CART } from "../../../constants/buttonConstants";
 
 const MenuItem = ({ pizza }) => {
   const { imageUrl, name, ingredients, unitPrice, soldOut } = pizza;
+
+  const [isClicked, setIsClicked] = useState(false);
+  const [counter, setCounter] = useState(0);
+
+  const handleShowCounter = () => {
+    setIsClicked(true);
+  };
+
+  const handleIncrement = () => {
+    setCounter((prevState) => prevState + 1);
+  };
+
+  const handleDecrement = () => {
+    if (counter > 0) {
+      setCounter((prevState) => prevState - 1);
+    }
+  };
+
+  const handleDeleteOrder = () => {
+    setIsClicked(false);
+    setCounter(0);
+  };
 
   return (
     <li className="pizza">
@@ -22,11 +46,21 @@ const MenuItem = ({ pizza }) => {
         {soldOut === false ? (
           <div className="pizza__actions">
             <p className="pizza__price">€{unitPrice}.00</p>
-            <Button
-              title={"ADD TO CART"}
-              handleClick={() => console.log("Added to cart")}
-              className="button"
-            />
+
+            {!isClicked ? (
+              <Button
+                title={ADD_TO_CART}
+                handleClick={handleShowCounter}
+                className="button"
+              />
+            ) : (
+              <Counter
+                counter={counter}
+                handleDelete={handleDeleteOrder}
+                handleIncrement={handleIncrement}
+                handleDecrement={handleDecrement}
+              />
+            )}
           </div>
         ) : (
           <div className="pizza__actions">

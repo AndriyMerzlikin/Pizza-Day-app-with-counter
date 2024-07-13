@@ -1,11 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import MenuList from "../../components/MenuList/MenuList";
 import { pizzas } from "../../data";
 import { usePizzaName } from "../../contexts/PizzaNameContext";
+import useFetch from "../../hooks/useFetch";
+import Loader from "../../components/Loader/Loader";
+import { PIZZA_API } from "../../apis/PizzaApi";
 
 const MenuPage = () => {
-  const [pizzasList, setPizzasList] = useState([]);
+  const {
+    data: pizzasList,
+    setData: setPizzasList,
+    isLoading,
+    error,
+  } = useFetch(PIZZA_API);
+
   const { pizzaName } = usePizzaName();
+  console.log(pizzasList);
 
   useEffect(() => {
     if (pizzaName) {
@@ -16,9 +26,15 @@ const MenuPage = () => {
     } else {
       setPizzasList(pizzas);
     }
-  }, [pizzaName]);
+  }, [pizzaName, setPizzasList]);
 
-  return <>{pizzasList.length ? <MenuList pizzas={pizzasList} /> : null}</>;
+  return (
+    <>
+      {isLoading && <Loader />}
+      {error && <h3>Error: {error}</h3>}
+      {pizzasList.length ? <MenuList pizzas={pizzasList} /> : null}
+    </>
+  );
 };
 
 export default MenuPage;

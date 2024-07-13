@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import MenuItem from "./MenuItem/MenuItem";
 import "../MenuList/MenuList.css";
 
