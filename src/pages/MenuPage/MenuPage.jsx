@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import MenuList from "../../components/MenuList/MenuList";
 import Loader from "../../components/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { filterPizzasList } from "../../redux/features/products/productsSlice";
+import {
+  filterPizzasList,
+  getProductItems,
+} from "../../redux/features/products/productsSlice";
 
 const MenuPage = () => {
   const { isLoading, error, pizzaName, filteredPizzasList } = useSelector(
@@ -11,9 +14,9 @@ const MenuPage = () => {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getProductItems());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getProductItems());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(filterPizzasList());
