@@ -4,30 +4,44 @@ import Button from "../../Button/Button";
 import Counter from "../../Counter/Counter";
 import "./MenuItem.css";
 import { ADD_TO_CART } from "../../../constants/buttonConstants";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  decrement,
+  increment,
+  removeItem,
+} from "../../../redux/features/cart/cartSlice";
 
 const MenuItem = ({ pizza }) => {
-  const { imageUrl, name, ingredients, unitPrice, soldOut } = pizza;
+  const { imageUrl, name, ingredients, unitPrice, soldOut, id } = pizza;
+
+  const dispatch = useDispatch();
+  const amount = useSelector(
+    (store) => store.cart.cartItems.find((item) => item.id === id)?.amount || 0
+  );
 
   const [isClicked, setIsClicked] = useState(false);
-  const [counter, setCounter] = useState(0);
 
   const handleShowCounter = () => {
+    dispatch(addToCart(pizza));
     setIsClicked(true);
   };
 
+  const handleDelete = () => {
+    dispatch(removeItem(id));
+    setIsClicked(false);
+  };
+
   const handleIncrement = () => {
-    setCounter((prevState) => prevState + 1);
+    dispatch(increment({ id }));
   };
 
   const handleDecrement = () => {
-    if (counter > 0) {
-      setCounter((prevState) => prevState - 1);
+    if (amount > 1) {
+      dispatch(decrement({ id }));
+    } else {
+      handleDelete();
     }
-  };
-
-  const handleDeleteOrder = () => {
-    setIsClicked(false);
-    setCounter(0);
   };
 
   return (
@@ -55,8 +69,8 @@ const MenuItem = ({ pizza }) => {
               />
             ) : (
               <Counter
-                counter={counter}
-                handleDelete={handleDeleteOrder}
+                counter={amount}
+                handleDelete={handleDelete}
                 handleIncrement={handleIncrement}
                 handleDecrement={handleDecrement}
               />

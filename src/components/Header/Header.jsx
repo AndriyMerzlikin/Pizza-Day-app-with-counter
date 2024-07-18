@@ -1,23 +1,26 @@
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import "./Header.css";
+import { TiShoppingCart } from "react-icons/ti";
 import { usePizzaName } from "../../contexts/PizzaNameContext";
 import { useRef } from "react";
 import Input from "../Input/Input";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const { userName } = useUser();
   const { setPizzaName } = usePizzaName();
+  const amount = useSelector((store) => store.cart.amount);
 
   const location = useLocation();
   const isMenuPage = location.pathname === "/menu";
   const isLoginPage = location.pathname === "/";
+  const isCartPage = location.pathname === "/cart";
 
   const formRef = useRef();
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    // formRef.current.reset();
   };
 
   const handleInputChange = (e) => {
@@ -40,7 +43,15 @@ const Header = () => {
           handlePlaceholder="Search for the order #"
         />
       </form>
-      {userName !== "" && isMenuPage && <h3>{userName}</h3>}
+      {userName !== "" && (isMenuPage || isCartPage) && (
+        <div className="cart-box">
+          <Link to={"cart"}>
+            <TiShoppingCart />
+          </Link>
+          <p>{amount}</p>
+          <h3>{userName}</h3>
+        </div>
+      )}
     </header>
   );
 };

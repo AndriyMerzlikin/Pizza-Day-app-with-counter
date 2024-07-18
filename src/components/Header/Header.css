@@ -26,3 +26,30 @@ input {
 input:focus {
   outline: 1px solid rgb(234, 179, 8);
 }
+
+.cart-box {
+  display: flex;
+  align-items: center;
+  gap: 5px; 
+}
+
+.cart-box a {
+  display: flex;
+  align-items: center;
+  color: #333; 
+  font-size: 24px; 
+  text-decoration: none;
+}
+
+.cart-box p {
+  margin: 0;
+  font-size: 18px; 
+  color: #333; 
+}
+
+.cart-box h3 {
+  margin: 0;
+  margin-left: 20px;
+  font-size: 18px;
+  color: #333;
+}

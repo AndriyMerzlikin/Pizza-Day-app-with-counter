@@ -3,6 +3,8 @@ import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
+import { LOGIN } from "../../constants/buttonConstants";
 
 const LoginPage = () => {
   const { userName, setUserName } = useUser();
@@ -41,7 +43,7 @@ const LoginPage = () => {
           handleChange={handleInputChange}
           handlePlaceholder="Your full name"
         />
-        <button>Login</button>
+        <Button className="button-yellow" title={LOGIN} />
       </form>
     </>
   );

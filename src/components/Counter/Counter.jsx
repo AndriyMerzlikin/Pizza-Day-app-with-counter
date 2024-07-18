@@ -1,4 +1,3 @@
-// import { useCounter } from "../../contexts/CounterContext";
 import { DECREMENT, DELETE, INCREMENT } from "../../constants/buttonConstants";
 import Button from "../Button/Button";
 import "./Counter.css";
@@ -9,8 +8,6 @@ const Counter = ({
   handleIncrement,
   handleDecrement,
 }) => {
-  //   const { state, handleIncrement, handleDecrement } = useCounter();
-
   return (
     <div className="counter-container">
       <div className="counter-box">

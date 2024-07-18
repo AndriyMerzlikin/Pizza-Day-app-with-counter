@@ -1,7 +1,9 @@
-/* eslint-disable react/prop-types */
-const Button = ({ title, handleClick }) => {
-    
-  return <button onClick={handleClick}>{title}</button>;
+const Button = ({ title, handleClick, className, children }) => {
+  return (
+    <button className={className} onClick={handleClick}>
+      {children} {title}
+    </button>
+  );
 };
 
 export default Button;

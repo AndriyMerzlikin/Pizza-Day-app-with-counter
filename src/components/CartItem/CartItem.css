@@ -1,0 +1,22 @@
+.cart-item-box {
+  display: flex;
+  justify-content: space-between;
+  width: 550px;
+  padding: 10px 0;
+  border-bottom: 1px solid #cfcdcd;
+}
+
+.cart-item-box h3 {
+  padding: 10px 0;
+  font-weight: 900;
+}
+
+.cart-item-box p {
+  padding: 10px 0;
+  font-weight: 900;
+}
+
+.cart-name-price {
+  display: flex;
+  gap: 10px;
+}
