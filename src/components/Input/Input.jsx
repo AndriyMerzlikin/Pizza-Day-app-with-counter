@@ -1,14 +1,14 @@
-/* eslint-disable react/prop-types */
-const Input = ({handleChange, handlePlaceholder, handleType}) => {
-    return (
-      <>
-        <input
-          type={handleType}
-          onChange={handleChange}
-          placeholder={handlePlaceholder}
-        />
-      </>
-    );
+const Input = ({ handleChange, handlePlaceholder, handleType, value }) => {
+  return (
+    <>
+      <input
+        value={value}
+        type={handleType}
+        onChange={handleChange}
+        placeholder={handlePlaceholder}
+      />
+    </>
+  );
 };
 
 export default Input;
