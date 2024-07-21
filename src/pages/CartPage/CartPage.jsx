@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import {
   BACK_TO_MENU,
@@ -41,7 +41,10 @@ const CartPage = () => {
               <h4>total €{total}.00</h4>
             </div>
             <div className="footer-btn-box">
-              <Button title={ORDER_PIZZAS} />
+              <Link to={"/order/new"}>
+                <Button title={ORDER_PIZZAS} />
+              </Link>
+
               <Button
                 className="clear-btn"
                 title={CLEAR_CART}
