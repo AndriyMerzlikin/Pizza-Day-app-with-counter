@@ -29,12 +29,22 @@
 }
 
 .label-check-box {
+  display: flex;
+  align-items: center;
   margin-left: 145px;
+}
+
+.label-check-box input[type="checkbox"] {
+  margin-right: 10px;
 }
 
 .error-message {
   color: red;
   font-size: 12px;
-  margin-left: 145px;
-  width: 100px; /* adjust this value to fit your design */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateY(2px);
+  width: 100%;
+  text-align: left;
 }

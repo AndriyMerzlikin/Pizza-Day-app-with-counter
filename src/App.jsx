@@ -1,10 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage/LoginPage";
-import MenuPage from "./pages/MenuPage/MenuPage";
 import Layout from "./components/Layout/Layout";
-import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-import CartPage from "./pages/CartPage/CartPage";
-import OrderFormPage from "./pages/OrderFormPage/OrderFormPage";
+import { lazy } from "react";
+
+const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
+const MenuPage = lazy(() => import("./pages/MenuPage/MenuPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage/NotFoundPage"));
+const CartPage = lazy(() => import("./pages/CartPage/CartPage"));
+const OrderFormPage = lazy(() => import("./pages/OrderFormPage/OrderFormPage"));
+const OrderPage = lazy(() => import("./pages/OrderPage/OrderPage"));
 
 function App() {
   return (
@@ -15,6 +18,7 @@ function App() {
           <Route path="menu" element={<MenuPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="order/new" element={<OrderFormPage />} />
+          <Route path="order/:id" element={<OrderPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

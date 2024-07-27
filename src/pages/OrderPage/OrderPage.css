@@ -1,0 +1,96 @@
+.order-ctnr {
+  width: 650px;
+}
+
+.status-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.status-box h3 {
+  font-weight: bold;
+}
+
+.status-text {
+  display: flex;
+  gap: 10px;
+}
+
+.priority-box {
+  color: white;
+  background-color: red;
+  border-radius: 10px;
+  padding: 2px 10px;
+}
+
+.preparing-box {
+  color: white;
+  background-color: rgb(19, 221, 19);
+  border-radius: 10px;
+  padding: 2px 10px;
+}
+
+/*  */
+
+.date-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(218, 213, 213);
+  padding: 6px;
+  margin-bottom: 40px;
+  border-radius: 5px;
+}
+
+.date-box h4 {
+  font-weight: bold;
+}
+
+.date-box p {
+  color: rgb(122, 122, 122);
+}
+/*  */
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.order-list li {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgb(211, 209, 209);
+  border-bottom: 1px solid rgb(211, 209, 209);
+  border-left: none;
+  border-right: none;
+  padding: 10px 0;
+  margin-bottom: -1px;
+}
+
+.order-list li p {
+  font-weight: bold;
+}
+
+.order-list li p span {
+  color: rgb(116, 115, 115);
+}
+
+/*  */
+
+.pay-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  background-color: rgb(218, 213, 213);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.pay-box p {
+  font-weight: 700;
+}

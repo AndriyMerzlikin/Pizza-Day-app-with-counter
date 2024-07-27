@@ -5,7 +5,7 @@ import { UserProvider } from "../../contexts/UserContext";
 import { PizzaNameProvider } from "../../contexts/PizzaNameContext";
 import { CounterProvider } from "../../contexts/CounterContext";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { calculateTotals } from "../../redux/features/cart/cartSlice";
 
 const Layout = () => {
@@ -22,9 +22,11 @@ const Layout = () => {
         <PizzaNameProvider>
           <UserProvider>
             <Header />
-            <main className="content">
-              <Outlet />
-            </main>
+            <Suspense fallback={null}>
+              <main className="content">
+                <Outlet />
+              </main>
+            </Suspense>
           </UserProvider>
         </PizzaNameProvider>
       </CounterProvider>

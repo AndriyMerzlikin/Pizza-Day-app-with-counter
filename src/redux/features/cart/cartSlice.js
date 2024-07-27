@@ -49,6 +49,11 @@ const cartSlice = createSlice({
       state.amount = amount;
       state.total = total;
     },
+    setCart: (state, action) => {
+      state.cartItems = action.payload.cartItems;
+      state.amount = action.payload.amount;
+      state.total = action.payload.total;
+    },
   },
 });
 
@@ -60,6 +65,7 @@ export const {
   increment,
   decrement,
   calculateTotals,
+  setCart,
 } = cartSlice.actions;
 
 // import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";

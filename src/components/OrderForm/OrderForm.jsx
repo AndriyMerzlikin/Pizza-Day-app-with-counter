@@ -1,175 +1,141 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button/Button";
 import "./OrderForm.css";
+import { Controller, useForm } from "react-hook-form";
+import { boolean, z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useUser } from "../../contexts/UserContext";
-import { useEffect, useRef, useState } from "react";
-import { capitalizeFirstLetter } from "../../utils/arrayHelpers";
+import Input from "../Input/Input";
+import { sendOrderData } from "../../redux/features/products/productsSlice";
+import { useNavigate } from "react-router-dom";
+
+const schema = z.object({
+  name: z.string().trim().min(3, { message: "At least 3 letters" }),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^\+\d{3}\s?\d{2}\s?\d{3}\s?\d{4,5}$/, {
+      message: "Invalid phone number",
+    }),
+  email: z.string().trim().email(),
+  priority: boolean(),
+});
 
 const OrderForm = () => {
-  const [orderForm, setOrderForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    priority: false,
-  });
-
-  const [formErrors, setFormErrors] = useState({
-    name: "",
-    phone: "",
-    email: "",
-  });
-
   const { userName } = useUser();
-  const total = useSelector((store) => store.cart.total);
+  const { cartItems, total } = useSelector((store) => store.cart);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const formRef = useRef();
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+    reset,
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      name: userName,
+      phone: "",
+      email: "",
+      priority: false,
+    },
+    resolver: zodResolver(schema),
+  });
 
-  useEffect(() => {
-    if (userName) {
-      setOrderForm((prev) => ({
-        ...prev,
-        name: capitalizeFirstLetter(userName),
-      }));
-    }
-  }, [userName]);
-
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-    handleResetForm();
-    const capitalizedForm = {
-      ...orderForm,
-      name: capitalizeFirstLetter(orderForm.name),
+  const handleFormSubmit = async (data) => {
+    const orderDataValue = {
+      address: data.email,
+      customer: data.name,
+      phone: data.phone,
+      priority: data.priority,
+      position: "",
+      cart: cartItems.map((item) => ({
+        name: item.name,
+        pizzaId: item.id,
+        quantity: item.amount,
+        totalPrice: item.amount * item.unitPrice,
+        unitPrice: item.unitPrice,
+      })),
+      totalPrice: total,
     };
 
-    console.log(capitalizedForm);
-  };
-
-  const handleResetForm = () => {
-    setOrderForm({ name: "", phone: "", email: "", priority: false });
-    formRef.current.reset();
-  };
-
-  const handleCheckedInput = (e) => {
-    setOrderForm((prev) => ({ ...prev, priority: e.target.checked }));
-  };
-
-  const handleChangeInputValue = (e) => {
-    const { name, value } = e.target;
-    if (name === "phone") {
-      
-      if (/^\d*$/.test(value)) {
-        setOrderForm((prev) => ({ ...prev, [name]: value }));
+    try {
+      const result = await dispatch(sendOrderData(orderDataValue)).unwrap();
+      reset();
+      if (result.status && result.status === "success") {
+        navigate(`/order/${result.data.id}`);
+      } else {
+        alert("Something went wrong");
       }
-    } else {
-      setOrderForm((prev) => ({ ...prev, [name]: value }));
+    } catch (error) {
+      console.error("Failed to send order:", error);
+      alert("Something went wrong");
     }
   };
-
-  const handleValidateName = () => {
-    if (orderForm.name.trim() === "") {
-      setFormErrors((prev) => ({ ...prev, name: "Empty field" }));
-    } else if (orderForm.name.trim().length < 3) {
-      setFormErrors((prev) => ({
-        ...prev,
-        name: "Min 3 letters",
-      }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        name: "",
-      }));
-    }
-  };
-
-  const handleValidatePhone = () => {
-    if (orderForm.phone.trim() === "") {
-      setFormErrors((prev) => ({ ...prev, phone: "Empty field" }));
-    } else if (orderForm.phone.trim().length !== 8) {
-      setFormErrors((prev) => ({
-        ...prev,
-        phone: "Must be exactly 8 numbers",
-      }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        phone: "",
-      }));
-    }
-  };
-
-  const handleValidateEmail = () => {
-    if (orderForm.email.trim() === "") {
-      setFormErrors((prev) => ({ ...prev, email: "Empty field" }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        email: "",
-      }));
-    }
-  };
-
-  const isButtonDisabled =
-    orderForm.name.trim() === "" ||
-    orderForm.phone.trim() === "" ||
-    orderForm.email.trim() === "" ||
-    formErrors.name ||
-    formErrors.phone ||
-    formErrors.email;
 
   return (
-    <form className="order-form" onSubmit={handleSubmitForm} ref={formRef}>
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="order-form">
       <div className="input-box">
         <label>First Name</label>
-        <input
-          type="text"
-          className="input"
+        <Controller
+          control={control}
           name="name"
-          value={orderForm.name}
-          onChange={handleChangeInputValue}
-          onBlur={handleValidateName}
-          required
+          render={({ field, fieldState }) => (
+            <Input
+              {...field}
+              type="text"
+              error={fieldState.error}
+              className="input"
+            />
+          )}
         />
       </div>
-      {formErrors.name && <p className="error-message">{formErrors.name}</p>}
       <div className="input-box">
         <label>Phone number</label>
-        <input
-          type="tel"
-          className="input"
+        <Controller
+          control={control}
           name="phone"
-          value={orderForm.phone}
-          onChange={handleChangeInputValue}
-          onBlur={handleValidatePhone}
-          required
+          render={({ field, fieldState }) => (
+            <Input
+              {...field}
+              type="tel"
+              name="phone"
+              error={fieldState.error}
+              className="input"
+              placeholder="+380"
+            />
+          )}
         />
       </div>
-      {formErrors.phone && <p className="error-message">{formErrors.phone}</p>}
       <div className="input-box">
         <label>Address</label>
-        <input
-          type="email"
-          className="input"
+        <Controller
+          control={control}
           name="email"
-          defaultValue={orderForm.address}
-          onChange={handleChangeInputValue}
-          onBlur={handleValidateEmail}
-          required
+          render={({ field, fieldState }) => (
+            <Input
+              {...field}
+              type="email"
+              error={fieldState.error}
+              className="input"
+              placeholder="test@gmail.com"
+            />
+          )}
         />
       </div>
-      {formErrors.email && <p className="error-message">{formErrors.email}</p>}
-
       <label className="label-check-box">
-        <input
-          type="checkbox"
-          checked={orderForm.priority}
-          onChange={handleCheckedInput}
+        <Controller
+          control={control}
+          name="priority"
+          render={({ field }) => <Input {...field} type="checkbox" />}
         />
         Want to You give your order priority?
       </label>
       <Button
         title={`Order now for €${total}.00`}
-        className={"order-button"}
-        disabled={isButtonDisabled}
+        className="order-button"
+        disabled={!isValid}
       />
     </form>
   );

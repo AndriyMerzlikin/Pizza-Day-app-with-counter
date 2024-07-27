@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { PIZZA_API } from "../../../apis/PizzaApi";
+import { PIZZA_API, PIZZA_ORDER } from "../../../apis/PizzaApi";
 
 const initialState = {
   pizzas: [],
   filteredPizzasList: [],
+  orderData: {},
   pizzaName: "",
   isLoading: false,
   error: null,
@@ -18,6 +19,27 @@ export const getProductItems = createAsyncThunk(
       return data.data;
     } catch (error) {
       console.log(error.message);
+    }
+  }
+);
+
+export const sendOrderData = createAsyncThunk(
+  "products/sendOrderData",
+  async (orderData) => {
+    try {
+      const response = await fetch(PIZZA_ORDER, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+      const result = await response.json();
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error.message);
+      throw error;
     }
   }
 );
@@ -51,9 +73,21 @@ const productsSlice = createSlice({
       })
       .addCase(getProductItems.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(sendOrderData.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(sendOrderData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orderData = action.payload;
+      })
+      .addCase(sendOrderData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       });
   },
 });
 
 export default productsSlice.reducer;
-export const { setPizzaName, filterPizzasList } = productsSlice.actions;
+export const { setPizzaName, filterPizzasList, setOrderData } =
+  productsSlice.actions;

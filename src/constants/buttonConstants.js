@@ -6,3 +6,5 @@ export const DECREMENT = "-";
 export const BACK_TO_MENU = "Back to menu";
 export const ORDER_PIZZAS = "ORDER PIZZAS";
 export const CLEAR_CART = "CLEAR CART";
+export const PRIORITY = "PRIORITY";
+export const PREPARING_ORDER = "PREPARING ORDER";

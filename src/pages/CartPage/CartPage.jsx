@@ -10,6 +10,8 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../../components/CartItem/CartItem";
 import { clearCart } from "../../redux/features/cart/cartSlice";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useEffect } from "react";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -17,6 +19,12 @@ const CartPage = () => {
 
   const { amount, cartItems, total } = useSelector((store) => store.cart);
   const dispatch = useDispatch();
+
+  const { setItem } = useLocalStorage("CartItems");
+
+  useEffect(() => {
+    setItem(cartItems);
+  }, [cartItems, setItem]);
 
   return (
     <div className="cart">
