@@ -50,7 +50,7 @@ const CartPage = () => {
             </div>
             <div className="footer-btn-box">
               <Link to={"/order/new"}>
-                <Button title={ORDER_PIZZAS} />
+                <Button title={ORDER_PIZZAS} className="button" />
               </Link>
 
               <Button

@@ -11,12 +11,20 @@ const Counter = ({
   return (
     <div className="counter-container">
       <div className="counter-box">
-        <Button title={INCREMENT} handleClick={handleIncrement} />
+        <Button
+          title={INCREMENT}
+          handleClick={handleIncrement}
+          className="button"
+        />
         <p>{counter}</p>
-        <Button title={DECREMENT} handleClick={handleDecrement} />
+        <Button
+          title={DECREMENT}
+          handleClick={handleDecrement}
+          className="button"
+        />
       </div>
 
-      <Button title={DELETE} handleClick={handleDelete} />
+      <Button title={DELETE} handleClick={handleDelete} className="button" />
     </div>
   );
 };
