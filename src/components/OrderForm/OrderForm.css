@@ -26,6 +26,13 @@
 .order-button {
   width: 230px;
   margin-top: 30px;
+  font-family: Roboto Mono, monospace;
+  border: 0;
+  padding: 10px 15px;
+  background-color: rgb(234, 179, 8);
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .label-check-box {

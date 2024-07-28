@@ -4,10 +4,11 @@ import "./OrderForm.css";
 import { Controller, useForm } from "react-hook-form";
 import { boolean, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useUser } from "../../contexts/UserContext";
+// import { useUser } from "../../contexts/UserContext";
 import Input from "../Input/Input";
 import { sendOrderData } from "../../redux/features/products/productsSlice";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const schema = z.object({
   name: z.string().trim().min(3, { message: "At least 3 letters" }),
@@ -22,7 +23,8 @@ const schema = z.object({
 });
 
 const OrderForm = () => {
-  const { userName } = useUser();
+  // const { userName } = useUser();
+  const { getItem } = useLocalStorage("userName");
   const { cartItems, total } = useSelector((store) => store.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ const OrderForm = () => {
   } = useForm({
     mode: "onBlur",
     defaultValues: {
-      name: userName,
+      name: getItem(),
       phone: "",
       email: "",
       priority: false,
