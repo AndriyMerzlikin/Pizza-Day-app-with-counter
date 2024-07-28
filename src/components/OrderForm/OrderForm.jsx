@@ -9,6 +9,7 @@ import Input from "../Input/Input";
 import { sendOrderData } from "../../redux/features/products/productsSlice";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { capitalizeFirstLetter } from "../../utils/arrayHelpers";
 
 const schema = z.object({
   name: z.string().trim().min(3, { message: "At least 3 letters" }),
@@ -37,7 +38,7 @@ const OrderForm = () => {
   } = useForm({
     mode: "onBlur",
     defaultValues: {
-      name: getItem(),
+      name: capitalizeFirstLetter(getItem()),
       phone: "",
       email: "",
       priority: false,
